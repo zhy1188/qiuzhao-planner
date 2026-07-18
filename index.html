@@ -1,0 +1,907 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>秋招计划表 · 面试 · 准备 · 投递</title>
+<style>
+  :root {
+    --bg: #f8fafc; --surface: #ffffff; --surface-2: #f1f5f9;
+    --border: #e2e8f0; --border-strong: #cbd5e1;
+    --text: #0f172a; --text-2: #475569; --text-3: #94a3b8;
+    --primary: #6366f1; --primary-hover: #4f46e5; --primary-soft: #eef2ff;
+    --danger: #ef4444; --danger-soft: #fef2f2;
+    --warning: #f59e0b; --warning-soft: #fffbeb;
+    --success: #10b981; --success-soft: #ecfdf5;
+    --shadow-sm: 0 1px 2px rgba(15,23,42,.04), 0 1px 3px rgba(15,23,42,.06);
+    --shadow-md: 0 4px 6px -1px rgba(15,23,42,.06), 0 2px 4px -2px rgba(15,23,42,.05);
+    --shadow-xl: 0 20px 25px -5px rgba(15,23,42,.10), 0 8px 10px -6px rgba(15,23,42,.08);
+    --radius: 12px; --radius-sm: 8px; --radius-lg: 16px;
+    --c-project: #6366f1; --c-bagu: #f59e0b; --c-algo: #10b981;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    background-image: radial-gradient(at 0% 0%, rgba(99,102,241,.06) 0px, transparent 50%),
+                      radial-gradient(at 100% 0%, rgba(168,85,247,.05) 0px, transparent 50%);
+    color: var(--text); min-height: 100vh; -webkit-font-smoothing: antialiased;
+  }
+  .app { max-width: 1120px; margin: 0 auto; padding: 28px 20px 40px; }
+  header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
+  header .brand { display: flex; align-items: center; gap: 12px; }
+  header .logo { width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 20px; box-shadow: var(--shadow-md); }
+  header h1 { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; }
+  header .subtitle { font-size: 12px; color: var(--text-3); margin-top: 2px; }
+  header .actions { display: flex; gap: 8px; }
+  .tabs { display: flex; gap: 4px; padding: 4px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-sm); margin-bottom: 20px; }
+  .tab { flex: 1; padding: 10px 12px; border: none; background: transparent; border-radius: var(--radius-sm); cursor: pointer; font-size: 14px; font-weight: 600; color: var(--text-2); font-family: inherit; transition: all .18s ease; display: flex; align-items: center; justify-content: center; gap: 6px; }
+  .tab:hover { background: var(--surface-2); color: var(--text); }
+  .tab.active { background: var(--primary); color: #fff; box-shadow: var(--shadow-sm); }
+  .page { display: none; }
+  .page.active { display: block; animation: fadeUp .25s ease; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  button { cursor: pointer; border: none; border-radius: var(--radius-sm); font-size: 14px; font-weight: 500; font-family: inherit; transition: all .18s cubic-bezier(.4,0,.2,1); display: inline-flex; align-items: center; gap: 6px; }
+  .btn-primary { background: var(--primary); color: #fff; padding: 9px 16px; box-shadow: var(--shadow-sm); }
+  .btn-primary:hover { background: var(--primary-hover); box-shadow: var(--shadow-md); transform: translateY(-1px); }
+  .btn-ghost { background: var(--surface); color: var(--text-2); border: 1px solid var(--border); padding: 8px 14px; }
+  .btn-ghost:hover { background: var(--surface-2); border-color: var(--border-strong); color: var(--text); }
+  .upcoming { background: var(--surface); border-radius: var(--radius-lg); padding: 18px 20px; margin-bottom: 20px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); }
+  .upcoming-head { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
+  .upcoming-head h3 { font-size: 13px; color: var(--text-2); font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
+  .upcoming-head .count { background: var(--primary-soft); color: var(--primary-hover); font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 10px; }
+  .upcoming-list { display: flex; gap: 12px; flex-wrap: wrap; }
+  .up-card { flex: 1; min-width: 200px; padding: 14px 16px; border-radius: var(--radius); background: var(--surface-2); cursor: pointer; border: 1px solid transparent; transition: all .18s ease; position: relative; overflow: hidden; }
+  .up-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--primary); }
+  .up-card.urgent::before { background: var(--danger); }
+  .up-card.urgent { background: var(--danger-soft); }
+  .up-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); border-color: var(--border-strong); }
+  .up-card .co { font-weight: 600; font-size: 15px; color: var(--text); }
+  .up-card .when { font-size: 12px; color: var(--text-2); margin-top: 4px; }
+  .up-card .type-tag { display: inline-block; font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 6px; margin-top: 8px; background: rgba(99,102,241,.12); color: var(--primary-hover); }
+  .up-card.urgent .type-tag { background: rgba(239,68,68,.14); color: var(--danger); }
+  .up-empty { color: var(--text-3); font-size: 14px; padding: 8px 0; display: flex; align-items: center; gap: 8px; }
+  .calendar { background: var(--surface); border-radius: var(--radius-lg); padding: 20px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); }
+  .cal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+  .cal-head h2 { font-size: 20px; font-weight: 700; letter-spacing: -0.01em; }
+  .cal-nav { display: flex; gap: 6px; align-items: center; }
+  .cal-nav button { background: var(--surface-2); padding: 7px 12px; color: var(--text-2); border: 1px solid var(--border); }
+  .cal-nav button:hover { background: var(--surface); border-color: var(--border-strong); color: var(--text); }
+  .cal-nav .month-label { font-weight: 600; min-width: 80px; text-align: center; color: var(--text-2); font-size: 14px; }
+  .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+  .cal-grid .dow { text-align: center; font-size: 12px; color: var(--text-3); padding: 8px 0; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; }
+  .cal-grid .dow.weekend { color: var(--danger); }
+  .cell { min-height: 92px; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 6px; cursor: pointer; transition: all .15s ease; display: flex; flex-direction: column; gap: 3px; background: var(--surface); }
+  .cell:hover { background: var(--primary-soft); border-color: var(--primary); box-shadow: var(--shadow-sm); }
+  .cell.other { background: var(--bg); color: var(--text-3); }
+  .cell.other:hover { background: var(--surface-2); }
+  .cell.today { background: linear-gradient(180deg, var(--primary-soft) 0%, var(--surface) 60%); border-color: var(--primary); border-width: 1.5px; }
+  .cell .date-num { font-size: 14px; font-weight: 600; color: var(--text); }
+  .cell.other .date-num { color: var(--text-3); font-weight: 500; }
+  .cell .date-num.sun { color: var(--danger); }
+  .cell.today .date-num { color: var(--primary-hover); }
+  .cell .event-chip { font-size: 11px; padding: 3px 7px; border-radius: 5px; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 500; line-height: 1.4; }
+  .chip-type-bs { background: #6366f1; }
+  .chip-type-cm1 { background: #10b981; }
+  .chip-type-cm2 { background: #0ea5e9; }
+  .chip-type-hr { background: #f59e0b; }
+  .chip-type-other { background: #64748b; }
+  .cell .more { font-size: 11px; color: var(--text-3); padding-left: 4px; font-weight: 500; }
+  .cell .prep-dots { display: flex; gap: 3px; margin-top: 2px; }
+  .cell .prep-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--c-project); }
+  .cell .prep-dot.bagu { background: var(--c-bagu); }
+  .cell .prep-dot.algo { background: var(--c-algo); }
+  .cell .prep-summary { font-size: 11px; color: var(--text-2); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .overlay { position: fixed; inset: 0; background: rgba(15,23,42,.4); backdrop-filter: blur(2px); display: none; z-index: 40; animation: fadeIn .2s ease; }
+  .overlay.show { display: block; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .drawer { position: fixed; top: 0; right: 0; height: 100vh; width: 420px; max-width: 92vw; background: var(--surface); z-index: 50; box-shadow: var(--shadow-xl); transform: translateX(100%); transition: transform .28s cubic-bezier(.4,0,.2,1); display: flex; flex-direction: column; }
+  .drawer.show { transform: translateX(0); }
+  .drawer-head { padding: 18px 22px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+  .drawer-head h3 { font-size: 17px; font-weight: 700; letter-spacing: -0.01em; }
+  .drawer-head .close-btn { width: 32px; height: 32px; border-radius: 8px; padding: 0; background: var(--surface-2); color: var(--text-2); font-size: 16px; display: flex; align-items: center; justify-content: center; }
+  .drawer-head .close-btn:hover { background: var(--danger-soft); color: var(--danger); }
+  .drawer-body { padding: 18px 22px; overflow-y: auto; flex: 1; }
+  .drawer-foot { padding: 14px 22px; border-top: 1px solid var(--border); display: flex; gap: 8px; background: var(--surface); }
+  .drawer-foot .btn-primary { flex: 1; justify-content: center; padding: 11px; }
+  .drawer-foot .btn-ghost.danger { color: var(--danger); border-color: var(--danger-soft); }
+  .drawer-foot .btn-ghost.danger:hover { background: var(--danger-soft); border-color: var(--danger); }
+  .field { margin-bottom: 16px; }
+  .field label { display: block; font-size: 12px; color: var(--text-2); margin-bottom: 6px; font-weight: 600; }
+  .field label .req { color: var(--danger); margin-left: 2px; }
+  .field input, .field select, .field textarea { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 14px; font-family: inherit; color: var(--text); background: var(--surface); transition: all .15s ease; }
+  .field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-soft); }
+  .field input::placeholder, .field textarea::placeholder { color: var(--text-3); }
+  .field textarea { resize: vertical; min-height: 70px; }
+  .row-2 { display: flex; gap: 12px; }
+  .row-2 .field { flex: 1; }
+  .empty-drawer { text-align: center; color: var(--text-3); padding: 40px 0; font-size: 14px; }
+  .empty-drawer .emoji { font-size: 32px; display: block; margin-bottom: 10px; }
+  .day-events { display: flex; flex-direction: column; gap: 10px; }
+  .day-event-item { border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px; cursor: pointer; transition: all .15s ease; background: var(--surface); }
+  .day-event-item:hover { background: var(--surface-2); border-color: var(--border-strong); box-shadow: var(--shadow-sm); }
+  .day-event-item .top { display: flex; justify-content: space-between; align-items: start; gap: 10px; }
+  .day-event-item .co-name { font-weight: 600; font-size: 15px; color: var(--text); }
+  .day-event-item .when-line { font-size: 12px; color: var(--text-2); margin-top: 4px; }
+  .day-event-item .badge { display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 12px; color: #fff; white-space: nowrap; }
+  .day-event-item .badge.prep-待准备 { background: var(--warning); }
+  .day-event-item .badge.prep-准备中 { background: var(--primary); }
+  .day-event-item .badge.prep-已完成 { background: var(--success); }
+  .legend { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-2); }
+  .legend-dot { width: 10px; height: 10px; border-radius: 3px; }
+  .prep-group { margin-bottom: 20px; }
+  .prep-group-head { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; padding: 10px 12px; border-radius: var(--radius-sm); }
+  .prep-group-head.g-project { background: rgba(99,102,241,.10); }
+  .prep-group-head.g-bagu { background: rgba(245,158,11,.10); }
+  .prep-group-head.g-algo { background: rgba(16,185,129,.10); }
+  .prep-group-head .icon { width: 24px; height: 24px; border-radius: 6px; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; }
+  .prep-group-head.g-project .icon { background: var(--c-project); }
+  .prep-group-head.g-bagu .icon { background: var(--c-bagu); }
+  .prep-group-head.g-algo .icon { background: var(--c-algo); }
+  .prep-group-head h4 { font-size: 14px; font-weight: 600; flex: 1; }
+  .prep-group-head .add-mini { background: transparent; border: 1px dashed var(--border-strong); padding: 3px 9px; font-size: 12px; color: var(--text-2); }
+  .prep-group-head .add-mini:hover { background: var(--surface); color: var(--primary-hover); border-color: var(--primary); }
+  .prep-item { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px; padding: 8px 10px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface); transition: all .15s ease; }
+  .prep-item:hover { background: var(--surface-2); }
+  .prep-item .check { width: 18px; height: 18px; border: 1.5px solid var(--border-strong); border-radius: 5px; flex-shrink: 0; margin-top: 2px; cursor: pointer; transition: all .15s ease; display: flex; align-items: center; justify-content: center; }
+  .prep-item .check.done { background: var(--primary); border-color: var(--primary); color: #fff; }
+  .prep-item .check.done::after { content: '✓'; font-size: 12px; font-weight: 700; }
+  .prep-item input.prep-input { flex: 1; border: none; background: transparent; padding: 4px 0; font-size: 14px; color: var(--text); }
+  .prep-item input.prep-input:focus { outline: none; }
+  .prep-item input.prep-input.done-text { text-decoration: line-through; color: var(--text-3); }
+  .prep-item .del-mini { background: transparent; border: none; color: var(--text-3); padding: 2px 6px; font-size: 16px; line-height: 1; }
+  .prep-item .del-mini:hover { color: var(--danger); }
+  .prep-summary-card { padding: 12px; border-radius: var(--radius-sm); background: var(--surface-2); margin-bottom: 10px; font-size: 13px; color: var(--text-2); }
+  .prep-summary-card .row { display: flex; justify-content: space-between; margin: 2px 0; }
+  .prep-summary-card .row .v { font-weight: 600; color: var(--text); }
+  /* 投递记录页样式 */
+  .stats-row { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+  .stat-card { flex: 1; min-width: 110px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; box-shadow: var(--shadow-sm); }
+  .stat-card .num { font-size: 24px; font-weight: 700; color: var(--text); letter-spacing: -0.02em; }
+  .stat-card .lbl { font-size: 12px; color: var(--text-2); margin-top: 2px; }
+  .stat-card.s-primary .num { color: var(--primary-hover); }
+  .stat-card.s-warning .num { color: var(--warning); }
+  .stat-card.s-success .num { color: var(--success); }
+  .stat-card.s-danger .num { color: var(--danger); }
+  .filter-bar { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; align-items: center; }
+  .filter-bar input.search { flex: 1; min-width: 180px; padding: 8px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 14px; font-family: inherit; color: var(--text); background: var(--surface); }
+  .filter-bar input.search:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-soft); }
+  .filter-bar .chip-btn { padding: 7px 12px; border: 1px solid var(--border); border-radius: 20px; background: var(--surface); color: var(--text-2); font-size: 12px; font-weight: 500; cursor: pointer; transition: all .15s ease; font-family: inherit; }
+  .filter-bar .chip-btn:hover { border-color: var(--border-strong); color: var(--text); }
+  .filter-bar .chip-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+  .apply-list { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); overflow: hidden; }
+  .apply-item { display: flex; align-items: center; gap: 14px; padding: 14px 18px; border-bottom: 1px solid var(--border); cursor: pointer; transition: background .15s ease; }
+  .apply-item:last-child { border-bottom: none; }
+  .apply-item:hover { background: var(--surface-2); }
+  .apply-item .date-col { min-width: 76px; text-align: center; }
+  .apply-item .date-col .d { font-size: 18px; font-weight: 700; color: var(--text); }
+  .apply-item .date-col .m { font-size: 11px; color: var(--text-3); }
+  .apply-item .info-col { flex: 1; min-width: 0; }
+  .apply-item .info-col .co { font-weight: 600; font-size: 15px; color: var(--text); }
+  .apply-item .info-col .pos { font-size: 13px; color: var(--text-2); margin-top: 2px; }
+  .apply-item .meta-line { font-size: 12px; color: var(--text-3); margin-top: 3px; display: flex; gap: 12px; flex-wrap: wrap; }
+  .apply-item .meta-line span { display: inline-flex; align-items: center; gap: 3px; }
+  .apply-item .status-badge { font-size: 12px; font-weight: 600; padding: 4px 11px; border-radius: 12px; white-space: nowrap; }
+  .st-已投递 { background: var(--primary-soft); color: var(--primary-hover); }
+  .st-测评 { background: var(--warning-soft); color: var(--warning); }
+  .st-笔试 { background: rgba(108,92,231,.12); color: #6c5ce7; }
+  .st-面试中 { background: rgba(14,165,233,.12); color: #0ea5e9; }
+  .st-Offer { background: var(--success-soft); color: var(--success); }
+  .st-拒绝 { background: var(--danger-soft); color: var(--danger); }
+  .st-终止 { background: var(--surface-2); color: var(--text-2); }
+  .apply-empty { text-align: center; padding: 50px 20px; color: var(--text-3); font-size: 14px; }
+  .apply-empty .emoji { font-size: 36px; display: block; margin-bottom: 12px; }
+  /* 周视图 */
+  .week-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 16px 20px; box-shadow: var(--shadow-sm); }
+  .week-head h2 { font-size: 20px; font-weight: 700; letter-spacing: -0.01em; }
+  .week-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; align-items: start; }
+  .week-day { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-sm); overflow: hidden; transition: border-color .15s ease; display: flex; flex-direction: column; min-width: 0; }
+  .week-day.today { border-color: var(--primary); border-width: 1.5px; }
+  .week-day-head { display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-bottom: 1px solid var(--border); background: var(--surface-2); }
+  .week-day.today .week-day-head { background: var(--primary-soft); }
+  .week-day-head .wd-date { font-size: 16px; font-weight: 700; color: var(--text); min-width: 76px; }
+  .week-day-head .wd-date .sun { color: var(--danger); }
+  .week-day-head .wd-dow { font-size: 13px; color: var(--text-2); font-weight: 600; }
+  .week-day-head .wd-progress { margin-left: auto; font-size: 12px; color: var(--text-2); }
+  .week-day-head .wd-progress .done { color: var(--success); font-weight: 600; }
+  .week-day-body { padding: 10px 16px 14px; display: flex; flex-direction: column; gap: 10px; }
+  .wd-group { }
+  .wd-group-head { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+  .wd-group-head .dot { width: 8px; height: 8px; border-radius: 3px; }
+  .wd-group-head .dot.d-project { background: var(--c-project); }
+  .wd-group-head .dot.d-bagu { background: var(--c-bagu); }
+  .wd-group-head .dot.d-algo { background: var(--c-algo); }
+  .wd-group-head .lbl { font-size: 11px; font-weight: 500; color: var(--text-3); text-transform: uppercase; letter-spacing: .04em; }
+  .wd-group-head .add-mini { margin-left: auto; background: transparent; border: 1px dashed var(--border-strong); padding: 2px 8px; font-size: 11px; color: var(--text-3); cursor: pointer; border-radius: 5px; font-family: inherit; }
+  .wd-group-head .add-mini:hover { color: var(--primary-hover); border-color: var(--primary); }
+  .wd-items { display: flex; flex-direction: column; gap: 4px; }
+  .wd-item { display: flex; align-items: center; gap: 8px; padding: 6px 0; font-size: 15px; font-weight: 500; color: var(--text); line-height: 1.45; }
+  .wd-item .check { width: 18px; height: 18px; border: 1.5px solid var(--border-strong); border-radius: 4px; flex-shrink: 0; margin-top: 1px; cursor: pointer; transition: all .15s ease; display: flex; align-items: center; justify-content: center; }
+  .wd-item .check.done { background: var(--primary); border-color: var(--primary); color: #fff; }
+  .wd-item .check.done::after { content: '✓'; font-size: 12px; font-weight: 700; }
+  .wd-item .txt { flex: 1; }
+  .wd-item .txt.done { text-decoration: line-through; color: var(--text-3); font-weight: 400; }
+  .wd-item .del { background: transparent; border: none; color: var(--text-3); font-size: 14px; cursor: pointer; padding: 0 4px; opacity: 0; transition: opacity .15s ease; }
+  .wd-item:hover .del { opacity: 1; }
+  .wd-item .del:hover { color: var(--danger); }
+  .wd-empty { font-size: 12px; color: var(--text-3); padding: 2px 0; }
+  .wd-item-input { flex: 1; border: 1px solid var(--primary); border-radius: 6px; padding: 6px 10px; font-size: 15px; font-weight: 500; font-family: inherit; color: var(--text); box-shadow: 0 0 0 3px var(--primary-soft); }
+  .wd-item-input:focus { outline: none; border-color: var(--primary); }
+  .wd-prog { position: relative; flex-shrink: 0; width: 70px; height: 18px; background: var(--surface-2); border-radius: 9px; cursor: pointer; overflow: hidden; margin-top: 1px; }
+  .wd-prog-bar { position: absolute; left: 0; top: 0; bottom: 0; background: linear-gradient(90deg, var(--primary) 0%, #8b5cf6 100%); border-radius: 9px; transition: width .2s ease; }
+  .wd-prog-num { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: var(--text-2); z-index: 1; }
+  .wd-item:hover .wd-prog-num { color: var(--text); }
+  @media (max-width: 900px) { .week-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 640px) { .app { padding: 16px 12px 28px; } .cell { min-height: 64px; padding: 4px; } .cell .event-chip { font-size: 10px; padding: 2px 5px; } .cell .date-num { font-size: 12px; } header h1 { font-size: 18px; } header .subtitle { display: none; } .cal-head h2 { font-size: 17px; } .up-card { min-width: 150px; } .tab { padding: 9px 6px; font-size: 12px; } .apply-item { flex-wrap: wrap; } .apply-item .date-col { min-width: 60px; } }
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="brand">
+      <div class="logo">📅</div>
+      <div><h1>秋招计划表</h1><div class="subtitle">面试 · 准备 · 投递 · 本地保存</div></div>
+    </div>
+    <div class="actions">
+      <button class="btn-ghost" id="todayBtn">回到今天</button>
+      <button class="btn-primary" id="addBtn">+ 新增</button>
+    </div>
+  </header>
+  <div class="tabs">
+    <button class="tab active" data-page="interview">💼 面试时间</button>
+    <button class="tab" data-page="prep">📚 准备计划</button>
+    <button class="tab" data-page="apply">📮 投递记录</button>
+  </div>
+  <div class="page active" id="page-interview">
+    <div class="upcoming">
+      <div class="upcoming-head"><h3>未来 3 天安排</h3><span class="count" id="upcomingCount">0</span></div>
+      <div class="upcoming-list" id="upcomingList"></div>
+    </div>
+    <div class="calendar">
+      <div class="cal-head"><h2 id="monthTitle"></h2>
+        <div class="cal-nav"><button id="prevBtn">‹ 上月</button><span class="month-label" id="monthLabel"></span><button id="nextBtn">下月 ›</button></div>
+      </div>
+      <div class="cal-grid" id="calGrid"></div>
+      <div class="legend">
+        <div class="legend-item"><span class="legend-dot" style="background:#6366f1"></span>笔试</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#10b981"></span>初面</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#0ea5e9"></span>二面</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#f59e0b"></span>HR面</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#64748b"></span>其他</div>
+      </div>
+    </div>
+  </div>
+  <div class="page" id="page-prep">
+    <div class="week-head">
+      <h2 id="weekTitle"></h2>
+      <div class="cal-nav"><button id="prepPrevBtn">‹ 上周</button><span class="month-label" id="weekLabel"></span><button id="prepNextBtn">下周 ›</button></div>
+    </div>
+    <div class="week-grid" id="weekGrid"></div>
+  </div>
+  <div class="page" id="page-apply">
+    <div class="stats-row" id="applyStats"></div>
+    <div class="filter-bar">
+      <input class="search" id="applySearch" placeholder="搜索公司或岗位…">
+      <button class="chip-btn active" data-status="全部">全部</button>
+      <button class="chip-btn" data-status="已投递">已投递</button>
+      <button class="chip-btn" data-status="测评">测评</button>
+      <button class="chip-btn" data-status="笔试">笔试</button>
+      <button class="chip-btn" data-status="面试中">面试中</button>
+      <button class="chip-btn" data-status="Offer">Offer</button>
+      <button class="chip-btn" data-status="拒绝">拒绝</button>
+    </div>
+    <div class="apply-list" id="applyList"></div>
+  </div>
+</div>
+<div class="overlay" id="overlay"></div>
+<div class="drawer" id="drawer">
+  <div class="drawer-head"><h3 id="drawerTitle">新增</h3><button class="close-btn" id="closeBtn">✕</button></div>
+  <div class="drawer-body" id="drawerBody"></div>
+  <div class="drawer-foot" id="drawerFoot"></div>
+</div><script>
+const EVT_KEY = 'qiuzhao_events_v1';
+const PREP_KEY = 'qiuzhao_prep_v1';
+const APPLY_KEY = 'qiuzhao_apply_v1';
+let events = [];
+let prep = {};
+let applies = [];
+let viewDate = new Date();
+let prepViewDate = new Date();
+let selectedDate = null;
+let editingId = null;
+let currentPage = 'interview';
+let applyFilter = '全部';
+let applyKeyword = '';
+const TYPE_LIST = ['笔试','初面','二面','HR面','其他'];
+const TYPE_CLASS = {'笔试':'chip-type-bs','初面':'chip-type-cm1','二面':'chip-type-cm2','HR面':'chip-type-hr','其他':'chip-type-other'};
+const PREP_GROUPS = [
+  { key:'project', label:'项目准备', emoji:'💻', cls:'g-project' },
+  { key:'bagu', label:'八股复习', emoji:'📖', cls:'g-bagu' },
+  { key:'algo', label:'算法刷题', emoji:'⚡', cls:'g-algo' }
+];
+const APPLY_STATUS = ['已投递','测评','笔试','面试中','Offer','拒绝','终止'];
+function loadEvents() { try { events = JSON.parse(localStorage.getItem(EVT_KEY) || '[]'); } catch { events = []; } }
+function saveEvents() { localStorage.setItem(EVT_KEY, JSON.stringify(events)); }
+function loadPrep() { try { prep = JSON.parse(localStorage.getItem(PREP_KEY) || '{}'); } catch { prep = {}; } }
+function savePrep() { localStorage.setItem(PREP_KEY, JSON.stringify(prep)); }
+function loadApplies() { try { applies = JSON.parse(localStorage.getItem(APPLY_KEY) || '[]'); } catch { applies = []; } }
+function saveApplies() { localStorage.setItem(APPLY_KEY, JSON.stringify(applies)); }
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+const pad = n => String(n).padStart(2,'0');
+function fmt(d) { return d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate()); }
+function parseFmt(s) { const [y,m,dd] = s.split('-').map(Number); return new Date(y, m-1, dd); }
+function addDays(d, n) { const x = new Date(d); x.setDate(x.getDate()+n); return x; }
+function getPrepDay(ds) {
+  if (!prep[ds]) prep[ds] = { project: [], bagu: [], algo: [] };
+  if (!prep[ds].project) prep[ds].project = [];
+  if (!prep[ds].bagu) prep[ds].bagu = [];
+  if (!prep[ds].algo) prep[ds].algo = [];
+  return prep[ds];
+}
+function countDayDone(day) {
+  if (!day) return { total:0, done:0 };
+  let total=0, done=0;
+  ['project','bagu','algo'].forEach(k => { total += day[k].length; done += day[k].filter(x => x.done).length; });
+  return { total, done };
+}
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    const page = t.dataset.page;
+    currentPage = page;
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + page).classList.add('active');
+    const labels = { interview:'+ 新增事件', prep:'+ 今日准备', apply:'+ 新增投递' };
+    document.getElementById('addBtn').textContent = labels[page];
+    if (page === 'interview') renderAll(); else if (page === 'prep') renderPrepAll(); else renderApplyAll();
+  });
+});
+function renderCalendar() {
+  const year = viewDate.getFullYear();
+  const month = viewDate.getMonth();
+  document.getElementById('monthTitle').textContent = year + '年' + (month+1) + '月';
+  document.getElementById('monthLabel').textContent = year + '.' + pad(month+1);
+  const grid = document.getElementById('calGrid');
+  grid.innerHTML = '';
+  const dows = ['日','一','二','三','四','五','六'];
+  dows.forEach((d,i) => { const el = document.createElement('div'); el.className = 'dow' + ((i===0||i===6) ? ' weekend' : ''); el.textContent = d; grid.appendChild(el); });
+  const first = new Date(year, month, 1);
+  const startWeekday = first.getDay();
+  const daysInMonth = new Date(year, month+1, 0).getDate();
+  const todayStr = fmt(new Date());
+  for (let i = 0; i < startWeekday; i++) grid.appendChild(makeCell(addDays(first, -(startWeekday - i)), true, todayStr));
+  for (let day = 1; day <= daysInMonth; day++) grid.appendChild(makeCell(new Date(year, month, day), false, todayStr));
+  const total = startWeekday + daysInMonth;
+  const tail = (7 - (total % 7)) % 7;
+  for (let i = 1; i <= tail; i++) grid.appendChild(makeCell(new Date(year, month+1, i), true, todayStr));
+}
+function makeCell(date, other, todayStr) {
+  const cell = document.createElement('div');
+  cell.className = 'cell' + (other ? ' other' : '');
+  const ds = fmt(date);
+  if (ds === todayStr) cell.classList.add('today');
+  const num = document.createElement('div');
+  num.className = 'date-num' + (date.getDay()===0 ? ' sun' : '');
+  num.textContent = date.getDate();
+  cell.appendChild(num);
+  const dayEvents = events.filter(e => e.date === ds).sort((a,b) => (a.time||'99:99').localeCompare(b.time||'99:99'));
+  dayEvents.slice(0, 2).forEach(ev => {
+    const chip = document.createElement('div');
+    chip.className = 'event-chip ' + (TYPE_CLASS[ev.type] || 'chip-type-other');
+    chip.textContent = ev.company + (ev.time ? ' ' + ev.time : '');
+    cell.appendChild(chip);
+  });
+  if (dayEvents.length > 2) {
+    const more = document.createElement('div');
+    more.className = 'more';
+    more.textContent = '还有 ' + (dayEvents.length-2) + ' 条';
+    cell.appendChild(more);
+  }
+  cell.addEventListener('click', () => openDayList(ds));
+  return cell;
+}
+function renderUpcoming() {
+  const list = document.getElementById('upcomingList');
+  const countEl = document.getElementById('upcomingCount');
+  list.innerHTML = '';
+  const today = new Date(); today.setHours(0,0,0,0);
+  const end = addDays(today, 3);
+  const up = events
+    .filter(e => { const d = parseFmt(e.date); return d >= today && d < end; })
+    .sort((a,b) => { if (a.date !== b.date) return a.date.localeCompare(b.date); return (a.time||'99:99').localeCompare(b.time||'99:99'); });
+  countEl.textContent = up.length;
+  if (!up.length) { list.innerHTML = '<div class="up-empty">🎉 未来 3 天暂无安排，继续保持节奏</div>'; return; }
+  up.forEach(ev => {
+    const card = document.createElement('div');
+    const d = parseFmt(ev.date);
+    const diff = Math.round((d - today) / 86400000);
+    card.className = 'up-card' + (diff <= 1 ? ' urgent' : '');
+    const dayLabel = diff === 0 ? '今天' : diff === 1 ? '明天' : diff + '天后';
+    card.innerHTML = '<div class="co">' + escapeHtml(ev.company) + '</div>' +
+      '<div class="when">' + dayLabel + ' · ' + ev.date + (ev.time ? ' ' + ev.time : '') + '</div>' +
+      '<span class="type-tag">' + ev.type + '</span>';
+    card.addEventListener('click', () => openEditor(ev.id));
+    list.appendChild(card);
+  });
+}
+function openDayList(ds) {
+  selectedDate = ds; editingId = null;
+  const body = document.getElementById('drawerBody');
+  const foot = document.getElementById('drawerFoot');
+  document.getElementById('drawerTitle').textContent = ds + ' 的安排';
+  const dayEvents = events.filter(e => e.date === ds).sort((a,b) => (a.time||'99:99').localeCompare(b.time||'99:99'));
+  if (!dayEvents.length) {
+    body.innerHTML = '<div class="empty-drawer"><span class="emoji">📭</span>这天还没有事件<br>点击下方按钮新增</div>';
+  } else {
+    body.innerHTML = '<div class="day-events"></div>';
+    const wrap = body.querySelector('.day-events');
+    dayEvents.forEach(ev => {
+      const item = document.createElement('div');
+      item.className = 'day-event-item';
+      let inner = '<div class="top"><div>' +
+        '<div class="co-name">' + escapeHtml(ev.company) + '</div>' +
+        '<div class="when-line">' + ev.type + ' · ' + (ev.time || '时间未定') + (ev.mode ? ' · ' + ev.mode : '') + '</div>';
+      if (ev.locationOrLink) inner += '<div class="when-line">📍 ' + escapeHtml(ev.locationOrLink) + '</div>';
+      if (ev.note) inner += '<div class="when-line" style="margin-top:6px;color:var(--text)">📝 ' + escapeHtml(ev.note) + '</div>';
+      const p = ev.prepStatus || '待准备';
+      inner += '</div><span class="badge prep-' + p + '">' + p + '</span></div>';
+      item.innerHTML = inner;
+      item.addEventListener('click', () => openEditor(ev.id));
+      wrap.appendChild(item);
+    });
+  }
+  foot.innerHTML = '';
+  const addBtn = document.createElement('button');
+  addBtn.className = 'btn-primary'; addBtn.textContent = '+ 在 ' + ds + ' 新增';
+  addBtn.addEventListener('click', () => openEditor(null, ds));
+  foot.appendChild(addBtn);
+  showDrawer();
+}
+function openEditor(id, presetDate) {
+  editingId = id;
+  const body = document.getElementById('drawerBody');
+  const foot = document.getElementById('drawerFoot');
+  document.getElementById('drawerTitle').textContent = id ? '编辑事件' : '新增事件';
+  const ev = id ? events.find(e => e.id === id) : null;
+  const d = ev || { company: '', type: '笔试', date: presetDate || selectedDate || fmt(new Date()), time: '', durationMin: '', mode: '线上', locationOrLink: '', prepStatus: '待准备', note: '' };
+  const typeOpts = TYPE_LIST.map(t => '<option value="' + t + '"' + (d.type===t?' selected':'') + '>' + t + '</option>').join('');
+  const modeOpts = ['线上','线下'].map(m => '<option value="' + m + '"' + (d.mode===m?' selected':'') + '>' + m + '</option>').join('');
+  const prepOpts = ['待准备','准备中','已完成'].map(p => '<option value="' + p + '"' + (d.prepStatus===p?' selected':'') + '>' + p + '</option>').join('');
+  body.innerHTML =
+    '<div class="field"><label>公司<span class="req">*</span></label><input id="f_company" value="' + escapeAttr(d.company) + '" placeholder="如 字节跳动"></div>' +
+    '<div class="row-2"><div class="field"><label>类型</label><select id="f_type">' + typeOpts + '</select></div>' +
+    '<div class="field"><label>形式</label><select id="f_mode">' + modeOpts + '</select></div></div>' +
+    '<div class="row-2"><div class="field"><label>日期<span class="req">*</span></label><input id="f_date" type="date" value="' + d.date + '"></div>' +
+    '<div class="field"><label>时间</label><input id="f_time" type="time" value="' + (d.time || '') + '"></div></div>' +
+    '<div class="row-2"><div class="field"><label>时长(分钟)</label><input id="f_dur" type="number" value="' + (d.durationMin || '') + '" placeholder="如 90"></div>' +
+    '<div class="field"><label>准备状态</label><select id="f_prep">' + prepOpts + '</select></div></div>' +
+    '<div class="field"><label>地点 / 会议链接</label><input id="f_loc" value="' + escapeAttr(d.locationOrLink || '') + '" placeholder="线下填地点，线上填会议链接"></div>' +
+    '<div class="field"><label>备注</label><textarea id="f_note" placeholder="考察重点、所需材料等">' + escapeHtml(d.note || '') + '</textarea></div>';
+  foot.innerHTML = '';
+  const saveBtn = document.createElement('button');
+  saveBtn.className = 'btn-primary'; saveBtn.textContent = '保存';
+  saveBtn.addEventListener('click', saveEvent); foot.appendChild(saveBtn);
+  if (id) {
+    const delBtn = document.createElement('button');
+    delBtn.className = 'btn-ghost danger'; delBtn.textContent = '删除';
+    delBtn.addEventListener('click', deleteEvent); foot.appendChild(delBtn);
+  }
+  showDrawer();
+  setTimeout(() => { const f = document.getElementById('f_company'); if (f) f.focus(); }, 50);
+}
+function saveEvent() {
+  const company = document.getElementById('f_company').value.trim();
+  const date = document.getElementById('f_date').value;
+  if (!company) { alert('请填写公司名称'); return; }
+  if (!date) { alert('请选择日期'); return; }
+  const durVal = document.getElementById('f_dur').value;
+  const data = {
+    id: editingId || uid(), company,
+    type: document.getElementById('f_type').value, date,
+    time: document.getElementById('f_time').value,
+    durationMin: durVal ? Number(durVal) : null,
+    mode: document.getElementById('f_mode').value,
+    locationOrLink: document.getElementById('f_loc').value.trim(),
+    prepStatus: document.getElementById('f_prep').value,
+    note: document.getElementById('f_note').value.trim()
+  };
+  if (editingId) { const idx = events.findIndex(e => e.id === editingId); if (idx >= 0) events[idx] = data; }
+  else events.push(data);
+  saveEvents(); renderAll(); closeDrawer();
+}
+function deleteEvent() {
+  if (!editingId) return;
+  if (!confirm('确定删除这条事件吗？')) return;
+  events = events.filter(e => e.id !== editingId);
+  saveEvents(); renderAll(); closeDrawer();
+}
+function renderPrepWeek() {
+  const grid = document.getElementById('weekGrid');
+  grid.innerHTML = '';
+  const start = getWeekStart(prepViewDate);
+  const todayStr = fmt(new Date());
+  const dows = ['周日','周一','周二','周三','周四','周五','周六'];
+  const end = addDays(start, 2);
+  document.getElementById('weekTitle').textContent = start.getFullYear() + '年';
+  document.getElementById('weekLabel').textContent = (start.getMonth()+1) + '.' + pad(start.getDate()) + ' - ' + (end.getMonth()+1) + '.' + pad(end.getDate());
+  for (let i = 0; i < 3; i++) {
+    grid.appendChild(makeWeekDay(addDays(start, i), dows, todayStr));
+  }
+}
+function getWeekStart(d) {
+  const x = new Date(d);
+  x.setHours(0,0,0,0);
+  return x;
+}
+function makeWeekDay(date, dows, todayStr) {
+  const ds = fmt(date);
+  const day = getPrepDay(ds);
+  const c = countDayDone(day);
+  const isToday = ds === todayStr;
+  const isSun = date.getDay() === 0;
+  const wrap = document.createElement('div');
+  wrap.className = 'week-day' + (isToday ? ' today' : '');
+  wrap.dataset.ds = ds;
+  const head = document.createElement('div');
+  head.className = 'week-day-head';
+  head.innerHTML = '<div class="wd-date"><span class="' + (isSun ? 'sun' : '') + '">' + (date.getMonth()+1) + '/' + date.getDate() + '</span></div>' +
+    '<div class="wd-dow">' + dows[date.getDay()] + '</div>' +
+    '<div class="wd-progress">' + (isToday ? '今天 · ' : '') + (c.total ? '<span class="done">' + c.done + '</span>/' + c.total : '暂无计划') + '</div>';
+  wrap.appendChild(head);
+  const body = document.createElement('div');
+  body.className = 'week-day-body';
+  PREP_GROUPS.forEach(g => {
+    const items = day[g.key] || [];
+    const gdone = items.filter(x => x.done).length;
+    const grp = document.createElement('div');
+    grp.className = 'wd-group';
+    grp.dataset.grp = g.key;
+    const dotCls = 'd-' + g.key;
+    grp.innerHTML = '<div class="wd-group-head"><span class="dot ' + dotCls + '"></span><span class="lbl">' + g.label + '</span>' +
+      (gdone ? '<span style="font-size:11px;color:var(--text-3)">' + gdone + '/' + items.length + '</span>' : '') +
+      '<button class="add-mini" data-grp="' + g.key + '">+ 添加</button></div>';
+    const itemsBox = document.createElement('div');
+    itemsBox.className = 'wd-items';
+    if (!items.length) {
+      itemsBox.innerHTML = '<div class="wd-empty">暂无，点"+ 添加"开始</div>';
+    } else {
+      items.forEach((item, idx) => {
+        const row = document.createElement('div');
+        row.className = 'wd-item';
+        const prog = (item.progress != null && !item.done) ? item.progress : (item.done ? 100 : 0);
+        const progBar = '<div class="wd-prog" data-idx="' + idx + '">' +
+          '<div class="wd-prog-bar" style="width:' + prog + '%"></div>' +
+          '<span class="wd-prog-num">' + (item.done ? '✓' : prog + '%') + '</span>' +
+          '</div>';
+        if (item.text === '') {
+          row.innerHTML = '<div class="check' + (item.done ? ' done' : '') + '" data-idx="' + idx + '"></div>' +
+            '<input class="wd-item-input" data-idx="' + idx + '" placeholder="输入内容，回车保存">' +
+            '<button class="del" data-idx="' + idx + '" title="删除">×</button>';
+        } else {
+          row.innerHTML = '<div class="check' + (item.done ? ' done' : '') + '" data-idx="' + idx + '"></div>' +
+            '<span class="txt' + (item.done ? ' done' : '') + '" data-idx="' + idx + '">' + escapeHtml(item.text) + '</span>' +
+            progBar +
+            '<button class="del" data-idx="' + idx + '" title="删除">×</button>';
+        }
+        itemsBox.appendChild(row);
+      });
+    }
+    grp.appendChild(itemsBox);
+    body.appendChild(grp);
+  });
+  wrap.appendChild(body);
+  // 事件绑定：+ 添加
+  wrap.querySelectorAll('.add-mini').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      const k = btn.dataset.grp;
+      getPrepDay(ds)[k].push({ id: uid(), text: '', done: false });
+      savePrep();
+      renderPrepAllInline();
+      const boxes = document.querySelectorAll('.week-day[data-ds="' + ds + '"] .wd-group[data-grp="' + k + '"] .wd-items .wd-item-input');
+      if (boxes.length) boxes[boxes.length - 1].focus();
+    });
+  });
+  // 勾选切换
+  wrap.querySelectorAll('.check').forEach(chk => {
+    chk.addEventListener('click', function(e) {
+      e.stopPropagation();
+      const grp = chk.closest('.wd-group');
+      const k = grp.dataset.grp;
+      const idx = +chk.dataset.idx;
+      const it = getPrepDay(ds)[k][idx];
+      it.done = !it.done;
+      if (it.done) it.progress = 100;
+      else if (it.progress == null) it.progress = 0;
+      savePrep(); renderPrepAllInline();
+    });
+  });
+  // 删除
+  wrap.querySelectorAll('.del').forEach(b => {
+    b.addEventListener('click', function(e) {
+      e.stopPropagation();
+      const grp = b.closest('.wd-group');
+      const k = grp.dataset.grp;
+      const idx = +b.dataset.idx;
+      getPrepDay(ds)[k].splice(idx, 1);
+      savePrep(); renderPrepAllInline();
+    });
+  });
+  // 进度条点击调整
+  wrap.querySelectorAll('.wd-prog').forEach(bar => {
+    bar.addEventListener('click', function(e) {
+      e.stopPropagation();
+      const grp = bar.closest('.wd-group');
+      const k = grp.dataset.grp;
+      const idx = +bar.dataset.idx;
+      const rect = bar.getBoundingClientRect();
+      const pct = Math.max(0, Math.min(100, Math.round((e.clientX - rect.left) / rect.width * 10) * 10));
+      const it = getPrepDay(ds)[k][idx];
+      if (pct >= 100) { it.done = true; it.progress = 100; }
+      else { it.done = false; it.progress = pct; }
+      savePrep(); renderPrepAllInline();
+    });
+  });
+  // input 编辑（空项）
+  wrap.querySelectorAll('.wd-item-input').forEach(inp => {
+    const grp = inp.closest('.wd-group');
+    const k = grp.dataset.grp;
+    const idx = +inp.dataset.idx;
+    const commit = () => {
+      const v = inp.value.trim();
+      if (v) { getPrepDay(ds)[k][idx].text = v; savePrep(); renderPrepAllInline(); }
+      else { getPrepDay(ds)[k].splice(idx, 1); savePrep(); renderPrepAllInline(); }
+    };
+    inp.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') { e.preventDefault(); commit(); }
+      else if (e.key === 'Escape') { getPrepDay(ds)[k].splice(idx, 1); savePrep(); renderPrepAllInline(); }
+    });
+    inp.addEventListener('blur', commit);
+  });
+  // 点击 span 文本编辑
+  wrap.querySelectorAll('.wd-item .txt').forEach(sp => {
+    sp.addEventListener('click', function(e) {
+      e.stopPropagation();
+      const grp = sp.closest('.wd-group');
+      const k = grp.dataset.grp;
+      const idx = +sp.dataset.idx;
+      const cur = getPrepDay(ds)[k][idx].text;
+      const inp = document.createElement('input');
+      inp.className = 'wd-item-input';
+      inp.value = cur;
+      sp.replaceWith(inp);
+      inp.focus();
+      inp.select();
+      const commit = () => {
+        const v = inp.value.trim();
+        getPrepDay(ds)[k][idx].text = v || getPrepDay(ds)[k][idx].text;
+        savePrep(); renderPrepAllInline();
+      };
+      inp.addEventListener('keydown', function(ev) {
+        if (ev.key === 'Enter') { ev.preventDefault(); commit(); }
+        else if (ev.key === 'Escape') { renderPrepAllInline(); }
+      });
+      inp.addEventListener('blur', commit);
+    });
+  });
+  return wrap;
+}
+function renderTodayPrep() {}
+function renderPrepAllInline() {
+  if (currentPage !== 'prep') return;
+  renderPrepWeek();
+}
+function openPrepEditor(ds) {
+  selectedDate = ds; editingId = null;
+  document.getElementById('drawerTitle').textContent = ds + ' 准备计划';
+  const body = document.getElementById('drawerBody');
+  const foot = document.getElementById('drawerFoot');
+  const day = getPrepDay(ds);
+  let html = '';
+  const c = countDayDone(day);
+  if (c.total > 0) html += '<div class="prep-summary-card"><div class="row"><span>今日进度</span><span class="v">' + c.done + ' / ' + c.total + '</span></div></div>';
+  PREP_GROUPS.forEach(g => {
+    html += '<div class="prep-group"><div class="prep-group-head ' + g.cls + '">' +
+      '<span class="icon">' + g.emoji + '</span><h4>' + g.label + '</h4>' +
+      '<button class="add-mini" data-grp="' + g.key + '">+ 添加</button></div>' +
+      '<div id="prep-list-' + g.key + '"></div></div>';
+  });
+  body.innerHTML = html;
+  PREP_GROUPS.forEach(g => renderPrepItems(ds, g.key));
+  body.querySelectorAll('.add-mini').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const k = btn.dataset.grp;
+      getPrepDay(ds)[k].push({ id: uid(), text: '', done: false });
+      savePrep(); renderPrepItems(ds, k); renderTodayPrep(); renderPrepWeek();
+      setTimeout(() => { const inputs = document.querySelectorAll('#prep-list-' + k + ' .prep-input'); if (inputs.length) inputs[inputs.length-1].focus(); }, 30);
+    });
+  });
+  foot.innerHTML = '';
+  const closeBtn = document.createElement('button');
+  closeBtn.className = 'btn-primary'; closeBtn.textContent = '完成';
+  closeBtn.addEventListener('click', () => { savePrep(); renderPrepAll(); closeDrawer(); });
+  foot.appendChild(closeBtn);
+  showDrawer();
+}
+function renderPrepItems(ds, key) {
+  const container = document.getElementById('prep-list-' + key);
+  if (!container) return;
+  const day = getPrepDay(ds);
+  const items = day[key];
+  container.innerHTML = '';
+  if (!items.length) { container.innerHTML = '<div style="font-size:12px;color:var(--text-3);padding:4px 2px">暂无，点上方"+ 添加"</div>'; return; }
+  items.forEach((item, idx) => {
+    const row = document.createElement('div');
+    row.className = 'prep-item';
+    row.innerHTML =
+      '<div class="check' + (item.done ? ' done' : '') + '" data-idx="' + idx + '"></div>' +
+      '<input class="prep-input' + (item.done ? ' done-text' : '') + '" value="' + escapeAttr(item.text) + '" placeholder="填写内容…">' +
+      '<button class="del-mini" data-idx="' + idx + '">×</button>';
+    container.appendChild(row);
+  });
+  container.querySelectorAll('.check').forEach(c => {
+    c.addEventListener('click', () => {
+      const i = +c.dataset.idx;
+      day[key][i].done = !day[key][i].done;
+      savePrep(); renderPrepItems(ds, key); renderTodayPrep(); renderPrepWeek();
+    });
+  });
+  container.querySelectorAll('.prep-input').forEach(inp => {
+    inp.addEventListener('input', () => {
+      const i = +inp.parentElement.querySelector('.del-mini').dataset.idx;
+      day[key][i].text = inp.value;
+    });
+    inp.addEventListener('blur', () => { savePrep(); renderTodayPrep(); });
+  });
+  container.querySelectorAll('.del-mini').forEach(b => {
+    b.addEventListener('click', () => {
+      const i = +b.dataset.idx;
+      day[key].splice(i, 1);
+      savePrep(); renderPrepItems(ds, key); renderTodayPrep(); renderPrepWeek();
+    });
+  });
+}function renderApplyStats() {
+  const statsEl = document.getElementById('applyStats');
+  const counts = {};
+  APPLY_STATUS.forEach(s => counts[s] = 0);
+  applies.forEach(a => { if (counts[a.status] !== undefined) counts[a.status]++; });
+  const cards = [
+    { lbl:'总投递', val:applies.length, cls:'s-primary' },
+    { lbl:'进行中', val:(counts['已投递']+counts['测评']+counts['笔试']+counts['面试中']), cls:'s-warning' },
+    { lbl:'Offer', val:counts['Offer'], cls:'s-success' },
+    { lbl:'已结束', val:(counts['拒绝']+counts['终止']), cls:'s-danger' }
+  ];
+  statsEl.innerHTML = cards.map(c =>
+    '<div class="stat-card ' + c.cls + '"><div class="num">' + c.val + '</div><div class="lbl">' + c.lbl + '</div></div>'
+  ).join('');
+}
+function renderApplyList() {
+  const listEl = document.getElementById('applyList');
+  let list = applies.slice().sort((a,b) => {
+    if (a.date !== b.date) return b.date.localeCompare(a.date);
+    return (a.createdAt||0) < (b.createdAt||0) ? 1 : -1;
+  });
+  if (applyFilter !== '全部') list = list.filter(a => a.status === applyFilter);
+  if (applyKeyword) {
+    const kw = applyKeyword.toLowerCase();
+    list = list.filter(a => (a.company||'').toLowerCase().includes(kw) || (a.position||'').toLowerCase().includes(kw));
+  }
+  if (!list.length) {
+    listEl.innerHTML = '<div class="apply-empty"><span class="emoji">📭</span>还没有投递记录<br>点击右上角"+ 新增投递"开始记录</div>';
+    return;
+  }
+  listEl.innerHTML = list.map(a => {
+    const d = parseFmt(a.date);
+    const co = escapeHtml(a.company);
+    const pos = escapeHtml(a.position || '未填写岗位');
+    let meta = '';
+    if (a.channel) meta += '<span>🔗 ' + escapeHtml(a.channel) + '</span>';
+    if (a.city) meta += '<span>📍 ' + escapeHtml(a.city) + '</span>';
+    if (a.note) meta += '<span>📝 ' + escapeHtml(a.note) + '</span>';
+    return '<div class="apply-item" data-id="' + a.id + '">' +
+      '<div class="date-col"><div class="d">' + d.getDate() + '</div><div class="m">' + (d.getMonth()+1) + '月</div></div>' +
+      '<div class="info-col"><div class="co">' + co + '</div><div class="pos">' + pos + '</div>' +
+      (meta ? '<div class="meta-line">' + meta + '</div>' : '') + '</div>' +
+      '<span class="status-badge st-' + a.status + '">' + a.status + '</span>' +
+      '</div>';
+  }).join('');
+  listEl.querySelectorAll('.apply-item').forEach(item => {
+    item.addEventListener('click', () => openApplyEditor(item.dataset.id));
+  });
+}
+function renderApplyAll() { renderApplyStats(); renderApplyList(); }
+function openApplyEditor(id) {
+  editingId = id;
+  const body = document.getElementById('drawerBody');
+  const foot = document.getElementById('drawerFoot');
+  document.getElementById('drawerTitle').textContent = id ? '编辑投递' : '新增投递';
+  const a = id ? applies.find(x => x.id === id) : null;
+  const d = a || { company:'', position:'', date: fmt(new Date()), status:'已投递', channel:'', city:'', note:'' };
+  const statusOpts = APPLY_STATUS.map(s => '<option value="' + s + '"' + (d.status===s?' selected':'') + '>' + s + '</option>').join('');
+  body.innerHTML =
+    '<div class="field"><label>公司<span class="req">*</span></label><input id="a_company" value="' + escapeAttr(d.company) + '" placeholder="如 字节跳动"></div>' +
+    '<div class="field"><label>岗位<span class="req">*</span></label><input id="a_position" value="' + escapeAttr(d.position) + '" placeholder="如 前端开发工程师"></div>' +
+    '<div class="row-2"><div class="field"><label>投递日期<span class="req">*</span></label><input id="a_date" type="date" value="' + d.date + '"></div>' +
+    '<div class="field"><label>当前状态</label><select id="a_status">' + statusOpts + '</select></div></div>' +
+    '<div class="row-2"><div class="field"><label>投递渠道</label><input id="a_channel" value="' + escapeAttr(d.channel||'') + '" placeholder="官网/牛客/Boss/内推…"></div>' +
+    '<div class="field"><label>城市</label><input id="a_city" value="' + escapeAttr(d.city||'') + '" placeholder="北京/上海/远程…"></div></div>' +
+    '<div class="field"><label>备注</label><textarea id="a_note" placeholder="内推人、薪资期望、特殊说明等">' + escapeHtml(d.note||'') + '</textarea></div>';
+  foot.innerHTML = '';
+  const saveBtn = document.createElement('button');
+  saveBtn.className = 'btn-primary'; saveBtn.textContent = '保存';
+  saveBtn.addEventListener('click', saveApply); foot.appendChild(saveBtn);
+  if (id) {
+    const delBtn = document.createElement('button');
+    delBtn.className = 'btn-ghost danger'; delBtn.textContent = '删除';
+    delBtn.addEventListener('click', deleteApply); foot.appendChild(delBtn);
+  }
+  showDrawer();
+  setTimeout(() => { const f = document.getElementById('a_company'); if (f) f.focus(); }, 50);
+}
+function saveApply() {
+  const company = document.getElementById('a_company').value.trim();
+  const position = document.getElementById('a_position').value.trim();
+  const date = document.getElementById('a_date').value;
+  if (!company) { alert('请填写公司名称'); return; }
+  if (!position) { alert('请填写岗位名称'); return; }
+  if (!date) { alert('请选择投递日期'); return; }
+  const data = {
+    id: editingId || uid(), company, position, date,
+    status: document.getElementById('a_status').value,
+    channel: document.getElementById('a_channel').value.trim(),
+    city: document.getElementById('a_city').value.trim(),
+    note: document.getElementById('a_note').value.trim(),
+    createdAt: editingId ? (applies.find(x=>x.id===editingId)||{}).createdAt || Date.now() : Date.now()
+  };
+  if (editingId) { const idx = applies.findIndex(x => x.id === editingId); if (idx >= 0) applies[idx] = data; }
+  else applies.push(data);
+  saveApplies(); renderApplyAll(); closeDrawer();
+}
+function deleteApply() {
+  if (!editingId) return;
+  if (!confirm('确定删除这条投递记录吗？')) return;
+  applies = applies.filter(x => x.id !== editingId);
+  saveApplies(); renderApplyAll(); closeDrawer();
+}
+function showDrawer() { document.getElementById('drawer').classList.add('show'); document.getElementById('overlay').classList.add('show'); }
+function closeDrawer() { document.getElementById('drawer').classList.remove('show'); document.getElementById('overlay').classList.remove('show'); editingId = null; }
+function escapeHtml(s) { return String(s||'').replace(/[&<>"']/g, function(c) { const m = {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}; return m[c]; }); }
+function escapeAttr(s) { return String(s||'').replace(/"/g, '&quot;'); }
+function renderAll() { renderCalendar(); renderUpcoming(); }
+function renderPrepAll() { renderPrepWeek(); }
+document.getElementById('prevBtn').addEventListener('click', () => { viewDate = new Date(viewDate.getFullYear(), viewDate.getMonth()-1, 1); renderCalendar(); });
+document.getElementById('nextBtn').addEventListener('click', () => { viewDate = new Date(viewDate.getFullYear(), viewDate.getMonth()+1, 1); renderCalendar(); });
+document.getElementById('prepPrevBtn').addEventListener('click', () => { prepViewDate = addDays(getWeekStart(prepViewDate), -7); renderPrepWeek(); });
+document.getElementById('prepNextBtn').addEventListener('click', () => { prepViewDate = addDays(getWeekStart(prepViewDate), 7); renderPrepWeek(); });
+document.getElementById('todayBtn').addEventListener('click', () => { if (currentPage === 'interview') { viewDate = new Date(); renderCalendar(); } else if (currentPage === 'prep') { prepViewDate = new Date(); renderPrepWeek(); } });
+document.getElementById('addBtn').addEventListener('click', () => {
+  if (currentPage === 'interview') openEditor(null);
+  else if (currentPage === 'prep') { prepViewDate = new Date(); renderPrepWeek(); setTimeout(() => { const t = document.querySelector('.week-day.today .add-mini'); if (t) t.click(); }, 30); }
+  else openApplyEditor(null);
+});
+document.getElementById('closeBtn').addEventListener('click', closeDrawer);
+document.getElementById('overlay').addEventListener('click', closeDrawer);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
+document.querySelectorAll('.filter-bar .chip-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-bar .chip-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilter = btn.dataset.status;
+    renderApplyList();
+  });
+});
+document.getElementById('applySearch').addEventListener('input', e => {
+  applyKeyword = e.target.value;
+  renderApplyList();
+});
+loadEvents();
+loadPrep();
+loadApplies();
+renderAll();
+renderPrepAll();
+renderApplyAll();
+</script>
+</body>
+</html>
